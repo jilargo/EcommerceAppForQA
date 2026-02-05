@@ -22,27 +22,27 @@ const SECRET_KEY = "your_super_secret_key"; // change in production
  * DATABASE SETUP (SQLite)
  ****************************************************/
 const db = new sqlite3.Database("./database.db");
-db.serialize(() => {
-    db.all("SELECT name FROM sqlite_master WHERE type='table'", (err, tables) => {
-        if (err) {
-            console.error("Error fetching tables:", err);
-            return;
-        }
+// db.serialize(() => {
+//     db.all("SELECT name FROM sqlite_master WHERE type='table'", (err, tables) => {
+//         if (err) {
+//             console.error("Error fetching tables:", err);
+//             return;
+//         }
 
-        tables.forEach((table) => {
-            const tableName = table.name;
-            if (tableName === "sqlite_sequence") return; // skip internal table
+//         tables.forEach((table) => {
+//             const tableName = table.name;
+//             if (tableName === "sqlite_sequence") return; // skip internal table
 
-            db.run(`DROP TABLE IF EXISTS ${tableName}`, (err) => {
-                if (err) {
-                    console.error(`Failed to drop table ${tableName}:`, err);
-                } else {
-                    console.log(`Dropped table: ${tableName}`);
-                }
-            });
-        });
-    });
-});
+//             db.run(`DROP TABLE IF EXISTS ${tableName}`, (err) => {
+//                 if (err) {
+//                     console.error(`Failed to drop table ${tableName}:`, err);
+//                 } else {
+//                     console.log(`Dropped table: ${tableName}`);
+//                 }
+//             });
+//         });
+//     });
+// });
 // Users table
 db.run(`
     CREATE TABLE IF NOT EXISTS users (

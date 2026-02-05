@@ -253,41 +253,6 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 });
 
 
-/*****************************************************
- * MANUAL AUTH STATE CHECK (UI TOGGLE)
- *****************************************************/
-// const token = localStorage.getItem("token");
-// const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-// if (token && currentUser) {
-
-//   // Logged-in UI
-//   document.getElementById("loginForm").classList.add("d-none");
-//   document.getElementById("loggedInState").classList.remove("d-none");
-//   document.getElementById("cartNav").classList.remove("d-none");
-
-//   document.getElementById("usernameDisplay").textContent =
-//     currentUser.firstName;
-
-//   document.getElementById("profilePicDisplay").src =
-//     currentUser.avatar;
-
-// } else {
-
-//   // Logged-out UI
-//   document.getElementById("loginForm").classList.remove("d-none");
-//   document.getElementById("loggedInState").classList.add("d-none");
-//   document.getElementById("cartNav").classList.add("d-none");
-// }
-
-
-// /*****************************************************
-//  * JWT PROTECTION (FRONTEND SIDE)
-//  * If token does not exist, user is forced to login
-//  *****************************************************/
-// if (!token) {
-//   window.location.href = "login.html";
-// }
 
 //if not successful to be deleted
 const token = localStorage.getItem("token");
