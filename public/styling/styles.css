@@ -1,0 +1,157 @@
+.hero-section {
+  min-height: 50vh;
+  background: #ebebeb;
+  
+}
+
+/* HEADLINE */
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.highlight {
+  color: #ff8c00;
+}
+
+/* SEARCH */
+.search-box {
+  display: flex;
+  gap: 10px;
+}
+
+.search-box input {
+  border-radius: 50px;
+  padding: 15px 20px;
+}
+
+.search-box button {
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-weight: bold;
+}
+
+/* IMAGE */
+.hero-img {
+  max-width: 500px;
+  height: 450px;
+  border-radius: 10px;
+}
+
+/* RIGHT PANEL */
+.order-panel {
+  
+  border-radius: 30px;
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ORDER CARDS */
+.order-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  font-size: 0.9rem;
+}
+
+.order-card p {
+  margin: 0;
+  color: #666;
+}
+
+
+/* products section */
+.products-section {
+  background: #f9f9f9;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.product-body h6 {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.price {
+  color: #ff8c00;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.cta-section {
+  background: linear-gradient(135deg, #ff8c00, #ff5e00);
+  padding: 80px 20px;
+}
+
+
+
+.product-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.price {
+  color: #ff8c00;
+  font-weight: bold;
+}
+
+/* styling/searchBoxStyling.css */
+
+.search-box {
+    max-width: 500px; /* shrink overall width */
+    margin: 1rem auto; /* center horizontally */
+}
+
+.search-box input,
+.search-box select,
+.search-box button {
+    font-size: 0.9rem; /* smaller text */
+    padding: 0.25rem 0.5rem; /* smaller padding */
+}
+
+.search-box button {
+    width: 100%; /* keep button full width of the box */
+}

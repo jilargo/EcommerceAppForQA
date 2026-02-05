@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>KaonTa Restaurant</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styling/styles.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">KaonTa Food Delivery</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Account Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width: 250px;">
+                            <!-- Logged in state -->
+                            <div id="loggedInState" class="d-none text-center">
+                                <h6>Welcome, <span id="usernameDisplay"></span>!</h6>
+                                <button class="btn btn-secondary w-100 mb-2" id="logoutBtn">Logout</button>
+                                <button class="btn btn-primary w-100 mb-2" id="viewHistoryBtn">Purchase History</button>
+                            </div>
+                        </ul>
+                    </li>
+
+                    <!-- Become a Seller Button -->
+                    <li class="nav-item ms-2">
+                        <button id="becomeSellerBtn" class="btn btn-outline-primary">Become a Seller</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+        <div class="container h-100">
+            <div class="row align-items-center h-100">
+                <h1>Purchase History</h1>
+
+                <!-- LEFT CONTENT -->
+                <div class="col-lg-5">
+
+
+                    <!-- Search Box -->
+                    <div class="search-box mt-4">
+                        <input type="text" id="searchInput" class="form-control mb-2" placeholder="Search products...">
+                        <select id="priceFilter" class="form-select mb-2">
+                            <option value="">All Prices</option>
+                            <option value="0-200">₱0 - ₱200</option>
+                            <option value="201-400">₱201 - ₱400</option>
+                            <option value="401-600">₱401 - ₱600</option>
+                        </select>
+                        <button class="btn btn-warning" id="searchBtn">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-1">© 2026 QA Commerce</p>
+            <small class="text-muted">Built for testing and learning</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="./js/app.js"></script>
+</body>
+
+</html>

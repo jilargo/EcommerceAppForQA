@@ -1,0 +1,6 @@
+[
+  { "title": "Cheese Pizza", "price": 499, "image": "./images/pizza.png" },
+  { "title": "Classic Burger", "price": 299, "image": "./images/burger.png" },
+  { "title": "Healthy Salad", "price": 199, "image": "./images/veggies.png" },
+  { "title": "Creamy Pasta", "price": 349, "image": "./images/sotanghon.png" }
+]

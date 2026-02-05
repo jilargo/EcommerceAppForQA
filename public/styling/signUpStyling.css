@@ -1,0 +1,79 @@
+body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #d49d4a, #ff8f6d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, sans-serif;
+        }
+
+        .signup-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+        }
+
+        .signup-card h2 {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .signup-card p {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+
+        .btn-orange {
+            background-color: #ff9800;
+            border: none;
+            color: white;
+            padding: 0.75rem;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .btn-orange:hover {
+            background-color: #e68900;
+        }
+
+        .avatar-preview {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff9800;
+            display: none;
+            margin: 0 auto 1rem;
+        }
+
+        .upload-label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #ff9800;
+            text-align: center;
+            display: block;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            text-decoration: none;
+            color: #ff9800;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    

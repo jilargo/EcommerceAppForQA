@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Dashboard</title>
+    <link rel="stylesheet" href="seller.css">
+</head>
+<body>
+
+<h2>Seller Dashboard</h2>
+
+<button id="logoutBtn">Logout</button>
+
+<hr>
+
+<h3>Add / Edit Product</h3>
+<form id="productForm">
+    <input type="hidden" id="productId">
+
+    <input type="text" id="productName" placeholder="Product name" required>
+    <input type="number" id="productPrice" placeholder="Price" required>
+
+    <button type="submit">Save Product</button>
+</form>
+
+<hr>
+
+<h3>Your Products</h3>
+<ul id="productsList"></ul>
+
+<script src="seller.js"></script>
+</body>
+</html>
