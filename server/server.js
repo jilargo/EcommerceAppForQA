@@ -18,6 +18,18 @@ const app = express();
 const PORT = 3000;
 const SECRET_KEY = "your_super_secret_key"; // change in production
 
+//seller dashboard routes
+const sellerDashboard = require("../public/js/seller-dashboard");
+
+app.use("/seller", sellerDashboard(db, authenticateToken, authorizeSeller));
+
+
+
+
+
+
+
+
 /****************************************************
  * DATABASE SETUP (SQLite)
  ****************************************************/
@@ -58,16 +70,16 @@ db.run(`
 `);
 
 // Products table
-db.run(`
-    CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        seller_id INTEGER,
-        name TEXT,
-        price REAL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (seller_id) REFERENCES users(id)
-    )
-`);
+// db.run(`
+//     CREATE TABLE IF NOT EXISTS products (
+//         id INTEGER PRIMARY KEY AUTOINCREMENT,
+//         seller_id INTEGER,
+//         name TEXT,
+//         price REAL,
+//         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+//         FOREIGN KEY (seller_id) REFERENCES users(id)
+//     )
+// `);
 
 /****************************************************
  * FILE UPLOAD SETUP (MULTER)

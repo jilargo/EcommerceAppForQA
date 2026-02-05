@@ -223,6 +223,8 @@ function loginSuccess() {
   // Display user's first name
   document.getElementById("usernameDisplay").textContent =
     currentUser.firstName;
+    document.getElementById("sellerNameDisplay").textContent =
+    currentUser.firstName;
 
   // Display avatar (fallback if missing)
   document.getElementById("profilePicDisplay").src =

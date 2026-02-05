@@ -1,42 +1,52 @@
 /* =========================================
-   PRODUCT FORM (COMPACT FLEX)
+   PRODUCT FORM STYLING
 ========================================= */
 #productForm {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    align-items: center;
     max-width: 700px;
+    margin: auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-#productForm input#productName {
-    flex: 2 1 200px; /* Product name takes more space */
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
+#productForm input#productName,
 #productForm input#productPrice {
-    flex: 1 1 100px; /* Price input smaller */
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
 
 #productForm button {
-    flex: 0 0 auto;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 8px;
     border: none;
     background-color: #198754;
     color: #fff;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 #productForm button:hover {
     background-color: #157347;
+}
+
+/* Upload label styling */
+.upload-label {
+    cursor: pointer;
+    font-weight: 600;
+    color: #ff7f00;
+}
+
+/* Avatar preview */
+.avatar-preview {
+    border-radius: 12px;
+    border: 2px solid #ccc;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 10px;
 }
 
 /* =========================================
@@ -55,11 +65,10 @@
     background-color: #fff;
     padding: 15px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     transition: transform 0.2s;
 }
 
@@ -67,17 +76,24 @@
     transform: translateY(-4px);
 }
 
-/* Product content inside card */
+#productsList li img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
 #productsList li .product-name {
     font-weight: 600;
-    margin-bottom: 8px;
     text-align: center;
+    margin-bottom: 5px;
 }
 
 #productsList li .product-price {
     color: #198754;
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 #productsList li button {
@@ -99,16 +115,19 @@
     color: #fff;
 }
 
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+}
+
 /* =========================================
    RESPONSIVE
 ========================================= */
 @media (max-width: 576px) {
     #productForm {
-        flex-direction: column;
-    }
-
-    #productForm input,
-    #productForm button {
-        flex: 1 1 100%;
+        padding: 15px;
     }
 }

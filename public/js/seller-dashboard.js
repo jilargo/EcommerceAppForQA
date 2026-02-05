@@ -1,108 +1,105 @@
-// ==========================
-// AUTH GUARD (frontend UX)
-// ==========================
-const token = localStorage.getItem("token");
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+//const sqlite3 = require("sqlite3").verbose();
 
-if (!token || !currentUser || currentUser.role !== "seller") {
-    window.location.href = "login.html";
-}
 
-// ==========================
-// DOM ELEMENTS
-// ==========================
-const productForm = document.getElementById("productForm");
-const productIdInput = document.getElementById("productId");
-const nameInput = document.getElementById("productName");
-const priceInput = document.getElementById("productPrice");
-const productsList = document.getElementById("productsList");
 
-// ==========================
-// FETCH SELLER PRODUCTS
-// ==========================
-async function loadProducts() {
-    const res = await fetch("/products", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
 
-    const products = await res.json();
-    productsList.innerHTML = "";
+// Listen to changes on the correct input
+const productAvatarInput = document.getElementById("ProductAvatar");
+const productAvatarPreview = document.getElementById("ProductavatarPrev");
+const uploadLabel = document.querySelector(".upload-label"); // the label wrapping input
 
-    products.forEach(p => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            ${p.name} - ₱${p.price}
-            <button onclick="editProduct(${p.id}, '${p.name}', ${p.price})">Edit</button>
-            <button onclick="deleteProduct(${p.id})">Delete</button>
-        `;
-        productsList.appendChild(li);
-    });
-}
-
-// ==========================
-// ADD / UPDATE PRODUCT
-// ==========================
-productForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const payload = {
-        name: nameInput.value.trim(),
-        price: priceInput.value
-    };
-
-    let url = "/products";
-    let method = "POST";
-
-    if (productIdInput.value) {
-        url = `/products/${productIdInput.value}`;
-        method = "PUT";
-    }
-
-    await fetch(url, {
-        method,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-    });
-
-    productForm.reset();
-    productIdInput.value = "";
-    loadProducts();
+// Make sure clicking the label opens the file picker
+uploadLabel.addEventListener("click", () => {
+    productAvatarInput.click();
 });
 
-// ==========================
-// EDIT PRODUCT
-// ==========================
-function editProduct(id, name, price) {
-    productIdInput.value = id;
-    nameInput.value = name;
-    priceInput.value = price;
-}
+// Preview selected image
+productAvatarInput.addEventListener("change", () => {
+    const file = productAvatarInput.files[0];
+    if (!file) return;
 
-// ==========================
-// DELETE PRODUCT
-// ==========================
-async function deleteProduct(id) {
-    await fetch(`/products/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+    const reader = new FileReader();
+    reader.onload = () => {
+        productAvatarPreview.src = reader.result;
+        productAvatarPreview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+});
+
+
+
+
+
+
+
+module.exports = (db, authenticateToken, authorizeSeller) => {
+    const express = require("express");
+    const router = express.Router();
+
+    /*****************************************************
+     * DATABASE SETUP (Products table only)
+     *****************************************************/
+    db.run(`
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            seller_id INTEGER,
+            name TEXT,
+            price REAL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (seller_id) REFERENCES users(id)
+        )
+    `, (err) => {
+        if (err) console.error("Error creating products table:", err);
     });
-    loadProducts();
-}
 
-// ==========================
-// LOGOUT
-// ==========================
-document.getElementById("logoutBtn").onclick = () => {
-    localStorage.clear();
-    window.location.href = "login.html";
+    /*****************************************************
+     * PRODUCTS CRUD ROUTES
+     *****************************************************/
+    // CREATE a new product
+    router.post("/products", authenticateToken, authorizeSeller, (req, res) => {
+        const { name, price } = req.body;
+        db.run(
+            "INSERT INTO products (seller_id, name, price) VALUES (?, ?, ?)",
+            [req.user.id, name, price],
+            function (err) {
+                if (err) return res.status(500).json({ message: "Database error" });
+                res.json({ message: "Product added", id: this.lastID });
+            }
+        );
+    });
+
+    // READ all products for the logged-in seller
+    router.get("/products", authenticateToken, authorizeSeller, (req, res) => {
+        db.all("SELECT * FROM products WHERE seller_id = ?", [req.user.id], (err, rows) => {
+            if (err) return res.status(500).json({ message: "Database error" });
+            res.json(rows);
+        });
+    });
+
+    // UPDATE a product
+    router.put("/products/:id", authenticateToken, authorizeSeller, (req, res) => {
+        const { name, price } = req.body;
+        db.run(
+            "UPDATE products SET name = ?, price = ? WHERE id = ? AND seller_id = ?",
+            [name, price, req.params.id, req.user.id],
+            function () {
+                if (this.changes === 0) return res.status(403).json({ message: "Not allowed" });
+                res.json({ message: "Updated" });
+            }
+        );
+    });
+
+    // DELETE a product
+    router.delete("/products/:id", authenticateToken, authorizeSeller, (req, res) => {
+        db.run(
+            "DELETE FROM products WHERE id = ? AND seller_id = ?",
+            [req.params.id, req.user.id],
+            function () {
+                if (this.changes === 0) return res.status(403).json({ message: "Not allowed" });
+                res.json({ message: "Deleted" });
+            }
+        );
+    });
+
+    return router;
 };
-
-// Init
-loadProducts();
