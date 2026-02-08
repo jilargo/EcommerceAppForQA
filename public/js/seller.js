@@ -209,7 +209,7 @@ async function loadProducts() {
             <img src="${prod.image}" alt="${prod.name}" style="width:60px; height:60px; object-fit:cover; margin-right:10px; border:1px solid #ccc">
             <div>
                 <strong>${prod.name}</strong><br>
-                $${prod.price}
+                ${prod.price}
             </div>
             <button class="btn btn-sm btn-primary ms-2" onclick="editProduct(${prod.id})">Edit</button>
             <button class="btn btn-sm btn-danger ms-2" onclick="deleteProduct(${prod.id})">Delete</button>

@@ -350,7 +350,7 @@ function renderCartDropdown() {
         <img src="${item.image}" alt="${item.name}" class="cart-thumb me-2">
         <div>
           <strong>${item.name}</strong><br>
-          <small>$${item.price} x ${item.quantity}</small>
+          <small>${item.price} x ${item.quantity}</small>
         </div>
       </div>
       <button class="btn btn-sm btn-danger removeCartBtn" data-id="${item.id}">&times;</button>
@@ -471,7 +471,7 @@ function displayProducts(productsArray) {
                 <div class="card-body d-flex flex-column">
                     <p class="text-muted mb-1">Seller: ${currentUser.firstName}</p>
                     <h6 class="card-title">${product.name}</h6>
-                    <p class="price">$${product.price}</p>
+                    <p class="price">${product.price}</p>
                     <button class="btn btn-warning btn-sm mt-auto addToCartBtn" data-id="${product.id}">Add to Cart</button>
                 </div>
             </div>
