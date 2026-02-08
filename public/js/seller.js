@@ -64,6 +64,7 @@ function displayProducts(productsArray) {
         const li = document.createElement("li");
         li.innerHTML = `
             <img src="${product.image}" alt="${product.name}">
+            <p>Seller:${currentUser.firstName}</p>
             <h6>${product.name}</h6>
             <p>${product.price}</p>
             <div>

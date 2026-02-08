@@ -164,7 +164,7 @@ app.post("/login", (req, res) => {
 
     const sql = "SELECT * FROM users WHERE email = ?";
     db.get(sql, [email], async (err, user) => {
-        if (err) return res.status(500).json({ message: "Server error" });
+        if (err) return res.status(500).json({ message: "You must have an account" });
         if (!user) return res.status(401).json({ message: "Invalid email or password" });
 
         const match = await bcrypt.compare(password, user.password);

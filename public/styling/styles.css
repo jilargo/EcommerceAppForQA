@@ -155,3 +155,43 @@
 .search-box button {
     width: 100%; /* keep button full width of the box */
 }
+
+
+/* Make all product images uniform */
+#productsList .card-img-top {
+    object-fit: cover;   /* crop instead of stretching */
+    height: 180px;       /* fixed height for all images */
+    width: 100%;         /* fill card width */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Card titles and prices spacing */
+#productsList .card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+#productsList .price {
+    font-weight: bold;
+    color: #f39c12; /* orange/yellow for visibility */
+    margin-bottom: 1rem;
+}
+
+/* Add hover effect for cards */
+#productsList .card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* Make button full width inside card */
+#productsList .btn {
+    width: 100%;
+}
+.cart-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
