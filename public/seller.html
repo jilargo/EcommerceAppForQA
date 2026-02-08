@@ -91,9 +91,9 @@
                                     placeholder="Search products...">
                                 <select id="priceFilter" class="form-select mb-2">
                                     <option value="">All Prices</option>
-                                    <option value="0-200">₱0 - ₱200</option>
-                                    <option value="201-400">₱201 - ₱400</option>
-                                    <option value="401-600">₱401 - ₱600</option>
+                                    <option value="0-200">$0 - $200</option>
+                                    <option value="201-400">$201 - $400</option>
+                                    <option value="401-600">$401 - $600</option>
                                 </select>
                                 <button class="btn btn-warning w-100" id="searchBtn">Search</button>
                             </div>
@@ -134,9 +134,10 @@
 
                                 <div class="mb-3">
                                     <label for="productPrice" class="form-label">Price</label>
-                                    <input type="number" id="productPrice" class="form-control"
-                                        placeholder="Enter price" required>
+                                    <input type="text" id="productPrice" class="form-control" placeholder="Enter price"
+                                        required>
                                 </div>
+
 
                                 <button type="submit" class="btn btn-success w-100">Save Product</button>
                             </form>
@@ -156,11 +157,12 @@
 
 
     <hr>
-    <div class="mb-5">
-        <h3>Your Products</h3>
+    <!-- Product List Container -->
+    <div class="container mt-4">
+        <h3 class="mb-3 text-dark">Your Products</h3>
         <ul id="productsList"></ul>
-
     </div>
+
 
 
     <br>
@@ -177,7 +179,7 @@
 
     <!-- Custom JS -->
     <script src="./js/seller.js"></script>
-    
+
 
 </body>
 
