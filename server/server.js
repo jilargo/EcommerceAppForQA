@@ -18,10 +18,8 @@ const app = express();
 const PORT = 3000;
 const SECRET_KEY = "your_super_secret_key"; // change in production
 
-//seller dashboard routes
-const sellerDashboard = require("../public/js/seller-dashboard");
 
-app.use("/seller", sellerDashboard(db, authenticateToken, authorizeSeller));
+
 
 
 
@@ -69,17 +67,7 @@ db.run(`
     )
 `);
 
-// Products table
-// db.run(`
-//     CREATE TABLE IF NOT EXISTS products (
-//         id INTEGER PRIMARY KEY AUTOINCREMENT,
-//         seller_id INTEGER,
-//         name TEXT,
-//         price REAL,
-//         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-//         FOREIGN KEY (seller_id) REFERENCES users(id)
-//     )
-// `);
+
 
 /****************************************************
  * FILE UPLOAD SETUP (MULTER)
@@ -104,62 +92,63 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(UPLOADS_DIR));
 app.use(express.static(path.join(__dirname, "../public")));
 
-/****************************************************
- * JWT AUTHENTICATION
- ****************************************************/
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-    if (!token) return res.status(401).json({ message: "Token required" });
 
-    jwt.verify(token, SECRET_KEY, (err, user) => {
-        if (err) return res.status(403).json({ message: "Invalid token" });
-        req.user = user;
-        next();
-    });
-}
 
-function authorizeSeller(req, res, next) {
-    if (req.user.role !== "seller") return res.status(403).json({ message: "Seller access only" });
-    next();
-}
+
+
 
 /****************************************************
  * ROUTES
  ****************************************************/
 
+
 // Signup
 app.post("/signup", upload.single("avatar"), async (req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
+        // Use fallback to handle missing fields gracefully
+        const firstName = req.body.firstName || req.body.first_name;
+        const lastName = req.body.lastName || req.body.last_name;
+        const email = req.body.email;
+        const password = req.body.password;
         const avatarFile = req.file;
 
         if (!firstName || !lastName || !email || !password)
             return res.status(400).json({ message: "All fields are required" });
 
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Avatar path fallback
         const avatarPath = avatarFile ? `/uploads/${avatarFile.filename}` : "/images/default-avatar.png";
 
+        // Insert user into DB
         const sql = `INSERT INTO users (first_name, last_name, email, password, avatar) VALUES (?, ?, ?, ?, ?)`;
-
         db.run(sql, [firstName, lastName, email, hashedPassword, avatarPath], function (err) {
             if (err) {
-                if (err.message.includes("UNIQUE constraint")) return res.status(400).json({ message: "Email already exists" });
+                if (err.message.includes("UNIQUE constraint")) 
+                    return res.status(400).json({ message: "Email already exists" });
+
+                console.error("DB INSERT ERROR:", err);
                 return res.status(500).json({ message: "Database error" });
             }
 
+            // Generate JWT token
             const token = jwt.sign({ id: this.lastID, email, role: "user" }, SECRET_KEY, { expiresIn: "1h" });
 
             res.status(201).json({
                 message: "User registered successfully",
-                user: { id: this.lastID, firstName, email, avatar: avatarPath, role: "user" },
+                user: { id: this.lastID, firstName, lastName, email, avatar: avatarPath, role: "user" },
                 token
             });
         });
     } catch (err) {
-        console.error(err);
+        console.error("SIGNUP ERROR:", err);
         res.status(500).json({ message: "Server error" });
     }
+});
+
+app.get("/signup", (req, res) => {
+  res.redirect("/signup.html");
 });
 
 // Login
@@ -175,45 +164,23 @@ app.post("/login", (req, res) => {
         const match = await bcrypt.compare(password, user.password);
         if (!match) return res.status(401).json({ message: "Invalid email or password" });
 
-        const { password: pw, ...userData } = user;
+        const userData = {
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            avatar: user.avatar,
+            role: user.role
+        };
+
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY, { expiresIn: "1h" });
 
         res.json({ user: userData, token });
     });
 });
 
-// Become seller
-app.post("/becomeSeller", authenticateToken, (req, res) => {
-    db.run("UPDATE users SET role = 'seller' WHERE id = ?", [req.user.id], function () {
-        const newToken = jwt.sign({ id: req.user.id, email: req.user.email, role: "seller" }, SECRET_KEY, { expiresIn: "1h" });
-        res.json({ token: newToken });
-    });
-});
 
-// Products CRUD
-app.post("/products", authenticateToken, authorizeSeller, (req, res) => {
-    const { name, price } = req.body;
-    db.run("INSERT INTO products (seller_id, name, price) VALUES (?, ?, ?)", [req.user.id, name, price], () => res.json({ message: "Product added" }));
-});
 
-app.get("/products", authenticateToken, authorizeSeller, (req, res) => {
-    db.all("SELECT * FROM products WHERE seller_id = ?", [req.user.id], (err, rows) => res.json(rows));
-});
-
-app.put("/products/:id", authenticateToken, authorizeSeller, (req, res) => {
-    const { name, price } = req.body;
-    db.run("UPDATE products SET name = ?, price = ? WHERE id = ? AND seller_id = ?", [name, price, req.params.id, req.user.id], function () {
-        if (this.changes === 0) return res.status(403).json({ message: "Not allowed" });
-        res.json({ message: "Updated" });
-    });
-});
-
-app.delete("/products/:id", authenticateToken, authorizeSeller, (req, res) => {
-    db.run("DELETE FROM products WHERE id = ? AND seller_id = ?", [req.params.id, req.user.id], function () {
-        if (this.changes === 0) return res.status(403).json({ message: "Not allowed" });
-        res.json({ message: "Deleted" });
-    });
-});
 
 /****************************************************
  * START SERVER
