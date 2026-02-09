@@ -129,4 +129,14 @@ signupForm.addEventListener("submit", async (e) => {
         console.error(err);
         alert("Server error, try again later.");
     }
+
+});
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+const icon = togglePassword.querySelector("i");
+
+togglePassword.addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+    icon.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
 });
