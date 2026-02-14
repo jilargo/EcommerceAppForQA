@@ -32,28 +32,33 @@
                 <input type="file" id="avatar" accept="image/*" hidden>
             </label>
             <br>
+
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <input type="text" id="firstName" class="form-control" placeholder="First Name" required>
+                    <input type="text" id="firstName" class="form-control" placeholder="First Name">
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" required>
+                    <input type="text" id="lastName" class="form-control" placeholder="Last Name">
                 </div>
             </div>
 
             <div class="mb-3">
-                <input type="email" id="email" class="form-control" placeholder="Email" required>
+                <input type="text" id="email" class="form-control" placeholder="Email">
             </div>
 
             <div class="mb-3">
                 <div class="input-group">
-                    <input type="password" id="password" class="form-control" placeholder="Password" required>
+                    <input type="password" id="password" class="form-control" placeholder="Password">
                     <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
                         <i class="bi bi-eye"></i>
                     </span>
                 </div>
             </div>
+            <!-- Popup validation / feedback -->
+            <div id="popup" class="popup"></div>
+
+
 
 
             <button class="btn btn-orange w-100">

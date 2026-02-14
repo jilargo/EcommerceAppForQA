@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Valid login",
+        "email": "ian@example.com",
+        "password": "!Password123",
+        "expected": "success"
+    },
+    {
+        "name": "Empty email",
+        "email": "",
+        "password": "!Password123",
+        "expected": "email_error"
+    },
+    {
+        "name": "Invalid email format",
+        "email": "ianexample.com",
+        "password": "!Password123",
+        "expected": "email_error"
+    },
+    {
+        "name": "Empty password",
+        "email": "ian@example.com",
+        "password": "",
+        "expected": "password_error"
+    },
+    {
+        "name": "Incorrect password",
+        "email": "ian@example.com",
+        "password": "wrongPassword123",
+        "expected": "credentials_error"
+    },
+    {
+        "name": "SQL injection attempt",
+        "email": "ian@example.com' OR '1'='1",
+        "password": "!Password123",
+        "expected": "credentials_error"
+    }
+]

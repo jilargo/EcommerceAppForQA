@@ -8,8 +8,10 @@ const loginForm = document.getElementById("loginForm");
 
 // Reference to the error message container
 const errorMsg = document.getElementById("errorMsg");
-
-
+//toogle password
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+const icon = togglePassword.querySelector("i");
 /*****************************************************
  * LOGIN FORM SUBMISSION HANDLER
  * Handles authentication using email + password
@@ -85,4 +87,11 @@ loginForm.addEventListener("submit", async (e) => {
         errorMsg.textContent = "Server error, try again later.";
         errorMsg.style.display = "block";
     }
+});
+
+
+togglePassword.addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+    icon.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
 });
