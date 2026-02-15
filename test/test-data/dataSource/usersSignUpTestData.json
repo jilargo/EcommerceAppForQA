@@ -82,9 +82,9 @@
     },
     {
         "name": "Existing email",
-        "first_name": "Ian",
+        "first_name": "James",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "james152136@gmail.com",
         "password": "!InfinityPassword123",
         "image": "profilePic.jpg",
         "expected": "existing_email_error"

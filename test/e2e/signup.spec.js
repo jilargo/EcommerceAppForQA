@@ -2,6 +2,7 @@ import { test } from '@playwright/test';
 import { SignupPage } from '../pageObjects/signup';
 import {initializeTestDb } from "../utils/testDbConfiguration";
 import {deleteUserByEmail} from "../helpers/dbCleanup";
+import {createUserViaApi} from "../helpers/apiHelpers";
 import users from '../test-data/dataSource/usersSignUpTestData.json';
 
 
@@ -9,18 +10,26 @@ import users from '../test-data/dataSource/usersSignUpTestData.json';
 
 test.beforeAll(async () => {
     await initializeTestDb();
-    await deleteUserByEmail(users.email);
+    for (const user of users){
+        await deleteUserByEmail(user.email);
+    }
 });
 
 test.describe.serial('Full User Flow Signup', () => {
     
     for (const user of users) {
-        test(`User Signup: ${user.name}`, async ({ page }) => {
+        test(`User Signup: ${user.name}`, async ({ page,request }) => {
 
 
 
             const signUp = new SignupPage(page);
             await signUp.goto();
+
+            //precondition for duplicate email
+            if(user.expected === 'existing_email_error'){
+                await createUserViaApi(request,user)
+  
+            }
 
             await signUp.signUp
                 (
@@ -32,6 +41,7 @@ test.describe.serial('Full User Flow Signup', () => {
 
             if (user.expected === 'success') {
                 await signUp.ExpectValidSignup(/Signup successful/i);
+                await deleteUserByEmail(user.email);
             }
 
             else if (user.expected === 'first_name_error') {
@@ -73,7 +83,7 @@ test.describe.serial('Full User Flow Signup', () => {
             else if (user.expected === 'existing_email_error') {
 
                 await signUp.ExpectEmailExist(/Email already exist/i);
-
+                await deleteUserByEmail(user.email);
             }
 
         });
