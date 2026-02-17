@@ -1,6 +1,3 @@
-// import { request } from '@playwright/test';
-// import path from 'path';
-// import fs from 'fs';
 
 export async function createUserViaApi(request, user) {
 
@@ -11,7 +8,8 @@ export async function createUserViaApi(request, user) {
             email: user.email,
             password: user.password,
             image: user.image   // just filename
-        }
+        },
+        headers: { 'Content-Type': 'application/json' }
     });
 
     if (!response.ok()) {
@@ -21,6 +19,3 @@ export async function createUserViaApi(request, user) {
 }
 
 
-module.exports = {
-    createUserViaApi
-}
