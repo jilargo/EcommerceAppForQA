@@ -42,19 +42,19 @@ test.describe('Full User Flow Login', () => {
 
             }
             else if (user.expected === 'email_error') {
-                await login.expectEmptyEmail(/email/i);
+                await login.expectValidationMessage(/email/i);
             }
             else if (user.expected === 'email_error') {
-                await login.expectInvalidEmailFormat(/email/i);
+                await login.expectValidationMessage(/email/i);
             }
             else if (user.expected === 'password_error') {
-                await login.expectEmptyPassword(/password/i);
+                await login.expectValidationMessage(/password/i);
             }
             else if (user.expected === 'credentials_error') {
-                await login.expectIncorrectPassword(/password/i);
+                await login.expectValidationMessage(/password/i);
             }
             else if (user.expected === 'credentials_error') {
-                await login.expectSqlInjectionAttempt(/email/i);
+                await login.expectValidationMessage(/email/i);
             }
 
         });

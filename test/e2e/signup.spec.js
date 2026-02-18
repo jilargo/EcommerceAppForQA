@@ -45,44 +45,44 @@ test.describe.serial('Full User Flow Signup', () => {
             }
 
             else if (user.expected === 'first_name_error') {
-                await signUp.ExpectEmptyFirstName(/first name/i);
+                await signUp.ExpectValidationMessage(/first name/i);
             } else if (user.expected === 'first_name_error') {
 
-                await signUp.ExpectInvalidFirstName(/first name/i);
+                await signUp.ExpectValidationMessage(/first name/i);
 
             } else if (user.expected === 'last_name_error') {
 
-                await signUp.ExpectEmptyLastName(/last name/i);
+                await signUp.ExpectValidationMessage(/last name/i);
 
             } else if (user.expected === 'last_name_error') {
 
-                await signUp.ExpectInvalidLastName(/last name/i);
+                await signUp.ExpectValidationMessage(/last name/i);
 
 
             }
             else if (user.expected === 'email_error') {
 
-                await signUp.ExpectEmptyEmail(/email/i);
+                await signUp.ExpectValidationMessage(/email/i);
 
             }
             else if (user.expected === 'email_error') {
 
-                await signUp.ExpectInvalidEmail(/email/i);
+                await signUp.ExpectValidationMessage(/email/i);
 
             }
 
 
             else if (user.expected === 'password_error') {
 
-                await signUp.ExpectEmptyPassword(/password/i);
+                await signUp.ExpectValidationMessage(/password/i);
             } else if (user.expected === 'password_error') {
 
-                await signUp.ExpectInvalidPassword(/password/i);
+                await signUp.ExpectValidationMessage(/password/i);
 
             }
             else if (user.expected === 'existing_email_error') {
 
-                await signUp.ExpectEmailExist(/Email already exist/i);
+                await signUp.ExpectValidationMessage(/Email already exist/i);
                 await deleteUserByEmail(user.email);
             }
 

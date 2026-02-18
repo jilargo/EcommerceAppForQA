@@ -7,12 +7,8 @@ export class productPage {
         this.page = page;
         this.productNameInput = page.getByPlaceholder('Enter product name')
         this.productPriceInput = page.getByPlaceholder('Enter price')
-        this.ValidAddProduct = page.locator('#productMessage');
-        this.EmptyProductName = page.locator('#productMessage');
-        this.EmptyProductPrice = page.locator('#productMessage');
-        this.EmptyProductImage = page.locator('#productMessage');
-        this.EditProductValidationMsg = page.locator('#productMessage');
-        this.DeleteProductValidationMsg = page.locator('#productMessage');
+        this.ProductMessage = page.locator('#productMessage');
+
 
     }
     async addProduct(product_name, product_price, product_image) {
@@ -31,17 +27,13 @@ export class productPage {
 
 
     }
-    async ExpectValidProductAddition(text){
-        await expect(this.ValidAddProduct).toHaveText(text);
-    }
-    async ExpectProductName(text){
-        await expect(this.EmptyProductName).toHaveText(text);
-    }
-    async ExpectProductPrice(text){
-        await expect (this.EmptyProductPrice).toHaveText(text);
-    }
-    async ExpectProductImage(text){
-        await expect (this.EmptyProductImage).toHaveText(text);
+    //edit product btn
+    async editProduct() {
+    await this.page.getByRole('button', { name: 'Edit' }).click();
+}
+
+    async ExpectProductMessage(text) {
+        await expect(this.ProductMessage).toHaveText(text);
     }
 
 }
