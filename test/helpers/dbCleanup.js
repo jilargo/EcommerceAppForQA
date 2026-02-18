@@ -17,6 +17,23 @@ function deleteUserByEmail(email) {
   });
 }
 
+function deleteProductByName(name) {
+  return new Promise((resolve, reject) => {
+    const db = getDb();
+
+    db.run(
+      "DELETE FROM products WHERE name = ?",
+      [name],
+      function (err) {
+        db.close();
+        if (err) return reject(err);
+        resolve();
+      }
+    );
+  });
+}
+
 module.exports = {
-deleteUserByEmail
+deleteUserByEmail,
+deleteProductByName
 }

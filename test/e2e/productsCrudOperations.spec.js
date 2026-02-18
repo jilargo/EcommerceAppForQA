@@ -1,46 +1,65 @@
+
 import { test } from '@playwright/test';
-import user from '../test-data/dataSource/loginViaApiTestData.json';
+import users from '../test-data/dataSource/loginViaApiTestData.json';
 import { initializeTestDb } from "../utils/testDbConfiguration";
 import { createUserViaApi } from "../helpers/apiHelpers";
-
-import {deleteUserByEmail} from "../helpers/dbCleanup";
-import { loginViaApi, createAuthContext, saveTokenToFile} from '../helpers/authHelpers';
-
+import { deleteUserByEmail, deleteProductByName } from "../helpers/dbCleanup";
+import { loginViaApi, saveTokenToFile, createAuthenticatedContext } from '../helpers/authHelpers';
+import productsList from '../test-data/dataSource/productsList.json';
+import { productPage } from '../pageObjects/products';
 
 test.beforeAll(async ({ playwright }) => {
   await initializeTestDb();
-  await deleteUserByEmail(user.email);
+  await deleteUserByEmail(users.email);
+  for (const products of productsList) {
+    await deleteProductByName(products.product_name);
+    console.log("Deleted Products: ", products.product_name);
+  }
+
 
   // Inject user before tests
   const apiContext = await playwright.request.newContext({
     baseURL: 'http://127.0.0.1:3000'
   });
-  await createUserViaApi(apiContext, user);
+  await createUserViaApi(apiContext, users);
   await apiContext.dispose();
 });
 
-test('Seller Dashboard access with JWT', async ({ playwright }) => {
-  const apiContext = await playwright.request.newContext({
-    baseURL: 'http://127.0.0.1:3000'
+for (const products of productsList) {
+  test(`Seller Dashboard: ${products.name}`, async ({ playwright, browser }) => {
+
+    const apiContext = await playwright.request.newContext({
+      baseURL: 'http://127.0.0.1:3000'
+    });
+
+
+    const authData = await loginViaApi(apiContext, users.email, users.password);
+    const { context, page } = await createAuthenticatedContext(browser, authData);
+
+
+    // 4️⃣ Initialize product page
+    const productsPage = new productPage(page);
+
+    // 5️⃣ Delete existing product (optional)
+    await deleteProductByName(products.name);
+
+    // 6️⃣ Add product
+    //await productsPage.goto(); // now fixed: URL is defined inside productPage
+    await productsPage.addProduct(products.product_name, products.product_price, products.product_image);
+
+    // 7️⃣ Assert expected outcome
+    if (products.expected === 'success') {
+      await productsPage.ExpectValidProductAddition(/Product successfully added/i);
+    } else if (products.expected === 'empty_product_name') {
+      await productsPage.ExpectProductName(/Product name is required/i);
+    } else if (products.expected === 'empty_product_price') {
+      await productsPage.ExpectProductPrice(/Please enter a valid price greater than 0/i);
+    } else if (products.expected === 'empty_product_image') {
+      await productsPage.ExpectProductImage(/Please upload a product image/i);
+    }
+
+    // 8️⃣ Close context
+    await context.close();
+    await apiContext.dispose();
   });
-
-  // 1️⃣ Login via API
-  const token = await loginViaApi(apiContext, user.email, user.password);
-
-  // 2️⃣ Save token JSON
-  await saveTokenToFile(token, user.email);
-
-  // 3️⃣ Create browser context with JWT injected
-  const { context, page } = await createAuthContext(token);
-
-  // 4️⃣ Navigate to dashboard
-  await page.goto('/seller', { waitUntil: 'networkidle' });
-
-  // 5️⃣ Wait for main dashboard element to ensure page loaded correctly
-  //await page.waitForSelector('#seller-dashboard-main');
-
-  // 6️⃣ Close context
-  await context.close();
-  await apiContext.dispose();
-});
-
+}

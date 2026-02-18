@@ -12,13 +12,13 @@ const dbPath = path.join(projectRoot, "test/test-data/database/databaseForTest.d
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 // Step 4: Debug info
-console.log("Project root:", projectRoot);
+//console.log("Project root:", projectRoot);
 //result = Project root: C:\Htdocs\Ecommerce\EcommerceAppForQA
 console.log("Resolved TEST DB:", dbPath);
 //result Resolved TEST DB: C:\Htdocs\Ecommerce\EcommerceAppForQA\test\test-data\databaseForTest.db
-console.log("Script folder (__dirname):", __dirname);
+//console.log("Script folder (__dirname):", __dirname);
 //result Current working dir (process.cwd()): C:\Htdocs\Ecommerce\EcommerceAppForQA - this script being located
-console.log("Current working dir (process.cwd()):", process.cwd());
+//console.log("Current working dir (process.cwd()):", process.cwd());
 //result PW Current Working Directory: C:\Htdocs\Ecommerce\EcommerceAppForQA
 
 // this is important because If the test-data folder doesn’t exist,it will create it.
@@ -56,39 +56,6 @@ function initializeTestDb() {
   });
 }
 
-//inserting user
-// function insertUser(user) {
-//   return new Promise((resolve, reject) => {
-//     const db = getDb();
-//     db.run(
-//       `INSERT INTO users (first_name, last_name, email, password, avatar) VALUES (?, ?, ?, ?, ?)`,
-//       [user.first_name, user.last_name, user.email, user.password],
-//       function (err) {
-//         db.close();
-//         if (err) return reject(err);
-//         resolve();
-//       }
-//     );
-//   });
-// }
-
-
-
-// function deleteUserByEmail(email) {
-//   return new Promise((resolve, reject) => {
-//     const db = getDb();
-
-//     db.run(
-//       "DELETE FROM users WHERE email = ?",
-//       [email],
-//       function (err) {
-//         db.close();
-//         if (err) return reject(err);
-//         resolve();
-//       }
-//     );
-//   });
-// }
 
 module.exports = {
   initializeTestDb,

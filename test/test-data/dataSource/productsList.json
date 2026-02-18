@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Valid product",
+        "product_name": "Fresh Pizza",
+        "product_price": "100",
+        "product_image": "pizza.png",
+        "expected": "success"
+    },
+    {
+        "name": "Empty product name",
+        "product_name": "",
+        "product_price": "100",
+        "product_image": "pizza.png",
+        "expected": "empty_product_name"
+    },
+    {
+        "name": "Empty product price",
+        "product_name": "Fresh Pizza",
+        "product_price": "",
+        "product_image": "pizza.png",
+        "expected": "empty_product_price"
+    },
+    {
+        "name": "Empty product image",
+        "product_name": "Fresh Pizza",
+        "product_price": "100",
+        "product_image": "",
+        "expected": "empty_product_image"
+    }
+
+]
+    

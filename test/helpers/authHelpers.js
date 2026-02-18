@@ -1,15 +1,8 @@
 
-import { chromium } from '@playwright/test';
-import fs from 'fs';
-import path from 'path';
-
-/**
- * Logs in via API and returns JWT token
- */
 export async function loginViaApi(request, email, password) {
   const response = await request.post('/login', {
     data: { email, password },
-    headers: { 'Content-Type': 'application/json' } // ensure JSON
+    headers: { 'Content-Type': 'application/json' }
   });
 
   if (!response.ok()) {
@@ -18,8 +11,12 @@ export async function loginViaApi(request, email, password) {
   }
 
   const body = await response.json();
-  return body.token; // assumes your backend returns { token: "..." }
+  return {
+    token: body.token,
+    user: body.user
+  };
 }
+
 
 /**
  * Saves token to a JSON file
@@ -31,20 +28,20 @@ export async function saveTokenToFile(token, email) {
   return authFile;
 }
 
-/**
- * Creates a browser context with JWT injected into localStorage
- */
-export async function createAuthContext(token) {
-  const context = await chromium.launchPersistentContext('', {
-    storageState: undefined // start fresh
-  });
 
-  await context.addInitScript(token => {
-    window.localStorage.setItem('jwt_token', token); // key must match frontend
-  }, token);
+export async function createAuthenticatedContext(browser, authData) {
+  const context = await browser.newContext();
+
+  await context.addInitScript(({ token, user }) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }, authData);
 
   const page = await context.newPage();
+  await page.goto('http://127.0.0.1:3000/seller');
+
   return { context, page };
 }
+
 
 
