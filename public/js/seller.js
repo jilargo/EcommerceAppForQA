@@ -460,16 +460,39 @@ document.addEventListener("DOMContentLoaded", () => {
 /*****************************************************
  * LOAD PRODUCTS (ONLY ONE SYSTEM NOW)
  *****************************************************/
+function getAuthHeaders() {
+  const token = getToken();
+
+  if (!token) {
+    return {};
+  }
+
+  return {
+    Authorization: `Bearer ${token}`
+  };
+}
+
 async function loadProducts() {
   if (!currentUser) return;
 
   try {
-    const res = await fetch(`/products?sellerId=${currentUser.id}`);
+    const res = await fetch(`/products`, {
+      headers: getAuthHeaders()
+    });
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        forceLogin();
+        return;
+      }
+      throw new Error("Failed to load products");
+    }
+
     const products = await res.json();
 
     productsList.innerHTML = "";
 
-    if (products.length === 0) {
+    if (!Array.isArray(products) || products.length === 0) {
       productsList.innerHTML = `<p class="text-muted">No products found.</p>`;
       return;
     }
@@ -507,7 +530,11 @@ async function deleteProduct(id) {
   if (!confirmDelete) return;
 
   try {
-    const res = await fetch(`/products/${id}`, { method: "DELETE" });
+    // const res = await fetch(`/products/${id}`, { method: "DELETE" });
+    const res = await fetch(`/products/${id}`, {
+  method: "DELETE",
+  headers: getAuthHeaders()
+});
     if (!res.ok) throw new Error("Delete failed");
 
     showMessage("Product successfully deleted!", "warning");
@@ -523,7 +550,10 @@ async function deleteProduct(id) {
  * EDIT PRODUCT
  *****************************************************/
 function editProduct(id) {
-  fetch(`/products?sellerId=${currentUser.id}`)
+  //fetch(`/products?sellerId=${currentUser.id}`)
+  fetch(`/products`, {
+  headers: getAuthHeaders()
+})
     .then(res => res.json())
     .then(products => {
       const product = products.find(p => p.id == id);
@@ -614,11 +644,12 @@ productForm?.addEventListener("submit", async e => {
   formData.append("name", name);
   formData.append("price", price);
   formData.append("image", imageFile);
-  formData.append("sellerId", currentUser.id);
+  //formData.append("sellerId", currentUser.id);
 
   try {
     const res = await fetch("/products", {
       method: "POST",
+      headers: getAuthHeaders(),
       body: formData
     });
 

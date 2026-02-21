@@ -104,7 +104,26 @@ db.run (`CREATE TABLE IF NOT EXISTS products (
     FOREIGN KEY(seller_id) REFERENCES users(id)
 )`);
 
+/****************************************************
+ * AUTH MIDDLEWARE
+ ****************************************************/
+function authMiddleware(req, res, next) {
+    const authHeader = req.headers.authorization;
 
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        req.user = decoded; // attach user info to request
+        next();
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid or expired token" });
+    }
+}
 
 /****************************************************
  * FILE UPLOAD SETUP (MULTER)
@@ -213,24 +232,53 @@ app.get("/login", (req, res) => {
 
 
 // Get products for seller
-app.get("/products", (req, res) => {
-    const sellerId = req.query.sellerId;
-    db.all("SELECT * FROM products WHERE seller_id = ?", [sellerId], (err, rows) => {
-        if (err) return res.status(500).json({ message: "DB error" });
-        res.json(rows);
-    });
+// app.get("/products", (req, res) => {
+//     const sellerId = req.query.sellerId;
+//     db.all("SELECT * FROM products WHERE seller_id = ?", [sellerId], (err, rows) => {
+//         if (err) return res.status(500).json({ message: "DB error" });
+//         res.json(rows);
+//     });
+// });
+app.get("/products", authMiddleware, (req, res) => {
+    db.all(
+        `SELECT 
+            p.*, 
+            u.first_name AS sellerFirstName, 
+            u.last_name AS sellerLastName
+         FROM products p
+         JOIN users u ON p.seller_id = u.id`,
+        (err, rows) => {
+            if (err) return res.status(500).json({ message: "DB error" });
+            res.json(rows);
+        }
+    );
 });
 
 // Add product
-app.post("/products", upload.single("image"), (req, res) => {
-    const { name, price, sellerId } = req.body;
+// app.post("/products", upload.single("image"), (req, res) => {
+//     const { name, price, sellerId } = req.body;
+//     const imagePath = req.file ? `/uploads/${req.file.filename}` : "/images/box.jpg";
+//     db.run(
+//         "INSERT INTO products (seller_id, name, price, image) VALUES (?, ?, ?, ?)",
+//         [sellerId, name, price, imagePath],
+//         function(err) {
+//             if (err) return res.status(500).json({ message: "DB error" });
+//             res.json({ id: this.lastID, name, price, image: imagePath });
+//         }
+//     );
+// });
+app.post("/products", authMiddleware, upload.single("image"), (req, res) => {
+    const { name, price } = req.body;
+    const sellerId = req.user.id;
+
     const imagePath = req.file ? `/uploads/${req.file.filename}` : "/images/box.jpg";
+
     db.run(
         "INSERT INTO products (seller_id, name, price, image) VALUES (?, ?, ?, ?)",
         [sellerId, name, price, imagePath],
         function(err) {
             if (err) return res.status(500).json({ message: "DB error" });
-            res.json({ id: this.lastID, name, price, image: imagePath });
+            res.status(201).json({ id: this.lastID, name, price, image: imagePath });
         }
     );
 });
@@ -239,29 +287,67 @@ app.get("/seller", (req, res) => {
 });
 
 // Edit product
-app.put("/products/:id", upload.single("image"), (req, res) => {
+// app.put("/products/:id", upload.single("image"), (req, res) => {
+//     const id = req.params.id;
+//     const { name, price } = req.body;
+//     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+//     const sql = imagePath
+//         ? "UPDATE products SET name = ?, price = ?, image = ? WHERE id = ?"
+//         : "UPDATE products SET name = ?, price = ? WHERE id = ?";
+//     const params = imagePath ? [name, price, imagePath, id] : [name, price, id];
+
+//     db.run(sql, params, function(err) {
+//         if (err) return res.status(500).json({ message: "DB error" });
+//         res.json({ id, name, price, image: imagePath });
+//     });
+// });
+app.put("/products/:id", authMiddleware, upload.single("image"), (req, res) => {
     const id = req.params.id;
     const { name, price } = req.body;
+    const sellerId = req.user.id;
     const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
 
-    const sql = imagePath
-        ? "UPDATE products SET name = ?, price = ?, image = ? WHERE id = ?"
-        : "UPDATE products SET name = ?, price = ? WHERE id = ?";
-    const params = imagePath ? [name, price, imagePath, id] : [name, price, id];
-
-    db.run(sql, params, function(err) {
+    // Ensure product belongs to user
+    db.get("SELECT * FROM products WHERE id = ? AND seller_id = ?", [id, sellerId], (err, product) => {
         if (err) return res.status(500).json({ message: "DB error" });
-        res.json({ id, name, price, image: imagePath });
+        if (!product) return res.status(403).json({ message: "Unauthorized" });
+
+        const sql = imagePath
+            ? "UPDATE products SET name = ?, price = ?, image = ? WHERE id = ?"
+            : "UPDATE products SET name = ?, price = ? WHERE id = ?";
+        const params = imagePath ? [name, price, imagePath, id] : [name, price, id];
+
+        db.run(sql, params, function(err) {
+            if (err) return res.status(500).json({ message: "DB error" });
+            res.json({ id, name, price, image: imagePath || product.image });
+        });
     });
 });
 
 // Delete product
-app.delete("/products/:id", (req, res) => {
+// app.delete("/products/:id", (req, res) => {
+//     const id = req.params.id;
+//     db.run("DELETE FROM products WHERE id = ?", [id], function(err) {
+//         if (err) return res.status(500).json({ message: "DB error" });
+//         res.json({ message: "Deleted" });
+//     });
+// });
+app.delete("/products/:id", authMiddleware, (req, res) => {
     const id = req.params.id;
-    db.run("DELETE FROM products WHERE id = ?", [id], function(err) {
-        if (err) return res.status(500).json({ message: "DB error" });
-        res.json({ message: "Deleted" });
-    });
+    const sellerId = req.user.id;
+
+    db.run(
+        "DELETE FROM products WHERE id = ? AND seller_id = ?",
+        [id, sellerId],
+        function(err) {
+            if (err) return res.status(500).json({ message: "DB error" });
+            if (this.changes === 0) {
+                return res.status(403).json({ message: "Unauthorized or not found" });
+            }
+            res.json({ message: "Deleted" });
+        }
+    );
 });
 
 

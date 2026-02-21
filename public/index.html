@@ -16,7 +16,6 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
         <div class="container">
             <a class="navbar-brand" href="index.html"><i class="bi bi-shop me-3"></i>Eyan Food Cafe</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -25,9 +24,6 @@
 
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-center">
-
-                    <!-- Cart (VISIBLE ONLY WHEN LOGGED IN) -->
-                    <!-- Cart Dropdown -->
                     <li id="cartNav" class="nav-item dropdown me-3 d-none">
                         <a class="nav-link position-relative dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown">
@@ -40,7 +36,6 @@
                         </ul>
                     </li>
 
-
                     <!-- Account Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -48,20 +43,13 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end p-3" style="min-width:250px">
-
-                            <!-- MUST BE VISIBLE ONLY WHEN LOGGED IN -->
                             <div id="loggedInState" class="d-none text-center">
                                 <img id="profilePicDisplay" class="rounded-circle mb-2" style="width:60px;height:60px"
                                     src="./images/default-avatar.png">
-
                                 <h6>Welcome, <span id="usernameDisplay"></span>!</h6>
-
-                                <button class="btn btn-secondary w-100 mb-2" id="logoutBtn">
-                                    Logout
-                                </button>
+                                <button class="btn btn-secondary w-100 mb-2" id="logoutBtn">Logout</button>
                             </div>
 
-                            <!-- MUST BE VISIBLE ONLY WHEN LOGGED OUT -->
                             <form id="loginForm">
                                 <h6 class="dropdown-header">Login</h6>
                                 <input type="email" id="email" class="form-control mb-2" placeholder="Email" required>
@@ -74,20 +62,12 @@
                                     <a href="signup.html" class="btn btn-success btn-sm">Sign Up</a>
                                 </div>
                             </form>
-
                         </ul>
                     </li>
+
                     <li class="nav-item ms-2">
-                    <a class="nav-link position-relative" href="seller.html">Become a Seller</a>
-                </li>
-                </ul>
-
-                </li>
-
-                <!-- Become a Seller Button -->
-                <li class="nav-item ms-2">
-                    <a class="nav-link position-relative" href="seller.html">Become a Seller</a>
-                </li>
+                        <a class="nav-link position-relative" href="seller.html">Become a Seller</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -97,25 +77,16 @@
     <section class="hero-section py-5">
         <div class="container h-100">
             <div class="row align-items-center h-100">
-
-                <!-- LEFT CONTENT -->
                 <div class="col-lg-5">
                     <small class="text-muted">Order restaurant food, takeaway and groceries.</small>
                     <h1 class="hero-title mt-2">
                         Feast Your Senses,<br>
                         <span class="highlight">Fast and Fresh</span>
                     </h1>
-
-                    <!-- Search Box -->
-
                 </div>
-
-                <!-- CENTER IMAGE -->
                 <div class="col-lg-4 text-center">
                     <img src="./images/hero-image.png" class="hero-img" alt="Food">
                 </div>
-
-                <!-- RIGHT ORANGE PANEL -->
                 <div class="col-lg-3 position-relative">
                     <div class="order-panel">
                         <div class="order-card">
@@ -132,11 +103,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
-    <div class="search-box mt-3">
+
+    <!-- Search Box -->
+    <div class="search-box mt-3 container">
         <input type="text" id="searchInput" class="form-control mb-2" placeholder="Search products...">
         <select id="priceFilter" class="form-select mb-2">
             <option value="">All Prices</option>
@@ -146,74 +118,32 @@
         </select>
         <button class="btn btn-warning" id="searchBtn">Search</button>
     </div>
+
     <!-- Products Section -->
-    <section class="products-section py-5">
-        <div class="container">
-
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Popular Products</h2>
-                <p class="text-muted">Fresh picks curated for you</p>
-            </div>
-
-            <!-- Loading State -->
-            <div id="loadingState" class="text-center py-5">
-                <div class="spinner-border text-warning" role="status"></div>
-                <p class="mt-3">Loading products...</p>
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState" class="text-center py-5 d-none">
-                <img src="./images/box.jpg" width="120" alt="No products">
-                <h5 class="mt-3" id="emptyStateTitle">No products available</h5>
-                <p class="text-muted">Please check back later.</p>
-            </div>
-
-            <!-- Search Results Text -->
-            <div id="searchResultsText" class="text-center mb-4 d-none"></div>
-
-
-
-        </div>
-        <!-- Product List Container -->
-
-        <div class="container mt-4">
-            <h3 class="mb-3 text-dark">Your Products</h3>
-            <div id="productsList" class="row"></div>
+    <section class="products-section py-5 container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Popular Products</h2>
+            <p class="text-muted">Fresh picks curated for you</p>
         </div>
 
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row text-center g-4">
-                <div class="col-md-4">
-                    <h4>⚡ Fast Delivery</h4>
-                    <p class="text-muted">From kitchen to doorstep in minutes.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4>🥗 Fresh Ingredients</h4>
-                    <p class="text-muted">Only the best quality food.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4>🔒 Secure Ordering</h4>
-                    <p class="text-muted">Your data and payments are safe.</p>
-                </div>
-            </div>
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-5 d-none">
+            <div class="spinner-border text-warning" role="status"></div>
+            <p class="mt-3">Loading products...</p>
         </div>
-    </section>
 
-    <!-- Call to Action -->
-    <section class="cta-section text-white text-center py-5">
-        <div class="container">
-            <h2 class="fw-bold mb-3">Ready to manage your own store?</h2>
-            <p class="mb-4">Create, update, and manage products easily.</p>
-            <a href="seller.html" class="btn btn-light btn-lg">Become a Seller</a>
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-5 d-none">
+            <img src="./images/box.jpg" width="120" alt="No products">
+            <h5 class="mt-3">No products available</h5>
+            <p class="text-muted">Please check back later.</p>
         </div>
+
+        <div class="row" id="productsList"></div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">
             <p class="mb-1">© 2026 QA Commerce</p>
             <small class="text-muted">Built for testing and learning</small>
@@ -225,7 +155,5 @@
 
     <!-- Custom JS -->
     <script src="./js/app.js"></script>
-    <script src="./js/login.js"></script>
 </body>
-
 </html>
