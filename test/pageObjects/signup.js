@@ -6,12 +6,12 @@ import { expect } from '@playwright/test';
 export class SignupPage {
     constructor(page) {
         this.page = page;
-        this.firstNameInput = page.getByPlaceholder('First Name')
-        this.lastnameInput = page.getByPlaceholder('Last Name')
-        this.emailInput = page.getByPlaceholder('Email')
-        this.passwordInput = page.getByPlaceholder('Password')
+        this.firstNameInput = page.getByPlaceholder(/first name/i);
+        this.lastnameInput = page.getByPlaceholder(/last name/i);
+        this.emailInput = page.getByPlaceholder(/email/i);
+        this.passwordInput = page.getByPlaceholder(/password/i);
         this.ProductMessage = page.locator('#popup');
-        
+
 
 
 
@@ -42,10 +42,10 @@ export class SignupPage {
         await expect(this.ProductMessage).toHaveText(text);
         await expect(this.page).toHaveURL(/index/);
     }
-    async ExpectValidationMessage(text){
+    async ExpectValidationMessage(text) {
         await expect(this.ProductMessage).toHaveText(text)
     }
-    
 
-    
+
+
 }

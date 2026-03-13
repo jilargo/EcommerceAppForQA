@@ -38,7 +38,7 @@ test.describe('Full User Flow Login', () => {
             if (user.expected === 'success') {
                 await login.expectValidLogin();
                 await deleteUserByEmail(user.email);
-                console.log("Deleted User: ",user.email);
+                //console.log("Deleted User: ",user.email);
 
             }
             else if (user.expected === 'email_error') {
