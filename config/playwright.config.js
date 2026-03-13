@@ -23,6 +23,10 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
+  use: {
+  actionTimeout: 45000,    // give individual .fill() / .click() more time
+  navigationTimeout: 90000,
+},
 
   reporter: [['html', { open: 'never' }], ['list']],
 });
