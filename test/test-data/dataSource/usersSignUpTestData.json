@@ -3,7 +3,7 @@
         "name": "Valid user",
         "first_name": "Ian",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "!InfinityPassword123",
         "image": "profilePic.jpg",
         "expected": "success"
@@ -12,7 +12,7 @@
         "name": "Empty first name",
         "first_name": "",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "!Password123",
         "image": "profilePic.jpg",
         "expected": "first_name_error"
@@ -21,7 +21,7 @@
         "name": "Invalid first name",
         "first_name": "123",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "!Password123",
         "image": "profilePic.jpg",
         "expected": "first_name_error"
@@ -30,7 +30,7 @@
         "name": "Empty last name",
         "first_name": "James Ian",
         "last_name": "",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "!Password123",
         "image": "profilePic.jpg",
         "expected": "last_name_error"
@@ -39,7 +39,7 @@
         "name": "Invalid last name",
         "first_name": "James Ian",
         "last_name": "123",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "!Password123",
         "image": "profilePic.jpg",
         "expected": "last_name_error"
@@ -66,7 +66,7 @@
         "name": "Empty password",
         "first_name": "James Ian",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "",
         "image": "profilePic.jpg",
         "expected": "password_error"
@@ -75,7 +75,7 @@
         "name": "Invalid password",
         "first_name": "James Ian",
         "last_name": "Largo",
-        "email": "ian@example.com",
+        "email": "ian@gmail.com",
         "password": "invalidpassword",
         "image": "profilePic.jpg",
         "expected": "password_error"
