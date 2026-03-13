@@ -17,7 +17,7 @@ test.beforeAll(async ({ playwright }) => {
   // Clean up products before tests
   for (const products of productsList) {
     await deleteProductByName(products.product_name);
-    console.log("Deleted Products: ", products.product_name);
+    //console.log("Deleted Products: ", products.product_name);
   }
 
 

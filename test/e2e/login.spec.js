@@ -22,7 +22,7 @@ test.describe('Full User Flow Login', () => {
             //Precondition the API injects user for valid login
             if (user.expected === 'Sign up'){
                 await createUserViaApi(request,user);
-                console.log(user);
+                //console.log(user);
 
             }
 
