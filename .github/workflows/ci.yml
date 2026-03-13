@@ -1,4 +1,4 @@
-name: Playwright Test
+name: Playwright Tests
 
 on:
   push:
@@ -9,65 +9,32 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15          # safety net
 
     steps:
-      # 1. Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'npm'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4. Install Playwright browsers + deps
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers + system dependencies
         run: npx playwright install --with-deps
 
-      # 5. Start the Express server in background with TEST_DB_PATH
-      - name: Start server with test database
-        run: |
-          TEST_DB_PATH=../test/test-data/databaseForTest.db node server.js > server.log 2>&1 &
-          echo $! > server.pid
-          disown
+      # ──────────────────────────────────────────────
+      # No manual server start here!
+      # Playwright's webServer in playwright.config.js will handle it
+      # ──────────────────────────────────────────────
 
-      # 6. Debug: Give server time to start/crash + show important info
-      - name: Debug server startup
-        run: |
-          sleep 12
-          echo "=== Current working directory ==="
-          pwd
-          echo ""
-          echo "=== server.log contents (startup messages or errors) ==="
-          cat server.log || echo "(no log file created - server likely crashed immediately)"
-          echo ""
-          echo "=== Files in repo root (confirm server.js exists) ==="
-          ls -la | head -n 15
-          echo ""
-          echo "=== Test database file exists? ==="
-          ls -la ../test/test-data/databaseForTest.db || echo "Test DB file NOT found!"
-          echo ""
-          echo "=== Is port 3000 listening? ==="
-          sudo netstat -tuln | grep 3000 || echo "Nothing listening on port 3000"
-          echo ""
-          echo "=== Running node processes ==="
-          ps aux | grep -i "[n]ode" || echo "No node process running"
-
-      # 7. Wait until the server is actually listening on port 3000
-      - name: Wait for server to be ready
-        run: npx wait-on --timeout 60000 tcp:3000
-
-      # 8. Run your Playwright E2E tests (which also set TEST_DB_PATH)
-      - name: Run Playwright tests
+      - name: Run Playwright E2E tests
         run: npm run test:e2e
 
-      # 9. Upload report even if tests fail
       - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -75,11 +42,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
-
-      # 10. Optional: Clean up server process
-      - name: Stop server (cleanup)
-        if: always()
-        run: |
-          if [ -f server.pid ]; then
-            kill $(cat server.pid) 2>/dev/null || true
-          fi
