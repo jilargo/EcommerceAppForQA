@@ -28,10 +28,16 @@ jobs:
 
       - name: Start server with test database
         run: cross-env TEST_DB_PATH=../test/test-data/databaseForTest.db node server.js &
+      -  name: Debug server startup
+         run: |
+          sleep 10
+          cat server.log || true
+          netstat -tuln | grep 3000 || true
+          ps aux | grep "[n]ode server.js" || true
 
       - name: Wait for server to respond
-        run: npx wait-on --timeout 20000 http-get://localhost:3000
-
+        run: npx wait-on --timeout 60000 tcp:3000
+      
       - name: Run Playwright tests
         run: npm run test:e2e
 
