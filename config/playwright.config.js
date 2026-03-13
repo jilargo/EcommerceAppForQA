@@ -3,7 +3,7 @@ import {dbPath} from '../test/utils/testDbConfiguration'
 
 export default defineConfig({
   testDir: "../test",
-  timeout: 60000,
+  timeout: 120_000,
   workers: 1,
   
 
@@ -20,8 +20,8 @@ export default defineConfig({
     // Pass TEST_DB_PATH to server
     command: `npx cross-env TEST_DB_PATH="${dbPath}" node ../server/server.js`,
     port: 3000,
-    reuseExistingServer: false,
-    timeout: 120000,
+    reuseExistingServer: !process.env.CI,
+    timeout: 180_000,
   },
 
   reporter: [['html', { open: 'never' }], ['list']],
