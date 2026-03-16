@@ -6,8 +6,8 @@ import { expect } from '@playwright/test';
 export class SignupPage {
     constructor(page) {
         this.page = page;
-        this.firstNameInput = page.getByPlaceholder(/first name/i);
-        this.lastnameInput = page.getByPlaceholder(/last name/i);
+        this.firstNameInput = page.getByPlaceholder(/firstname/i);
+        this.lastnameInput = page.getByPlaceholder(/lastname/i);
         this.emailInput = page.getByPlaceholder(/email/i);
         this.passwordInput = page.getByPlaceholder(/password/i);
         this.ProductMessage = page.locator('#popup');
