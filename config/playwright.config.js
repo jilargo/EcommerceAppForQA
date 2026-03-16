@@ -9,7 +9,7 @@ export default defineConfig({
 
   use: {
     baseURL: 'http://localhost:3000',
-    headed: true,
+    headed: false,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     video: 'retain-on-failure',
