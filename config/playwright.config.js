@@ -4,7 +4,7 @@ import {dbPath} from '../test/utils/testDbConfiguration'
 export default defineConfig({
   testDir: "../test",
   timeout: 120_000,
-  workers: 1,
+  workers: 4,
   
 
   use: {

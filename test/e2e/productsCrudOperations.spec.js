@@ -34,15 +34,15 @@ for (const products of productsList) {
 
     const apiContext = await playwright.request.newContext({
       baseURL: 'http://127.0.0.1:3000'
-
+      
     });
-
+    
 
     const authData = await loginViaApi(apiContext, users.email, users.password);
     const { context, page } = await createAuthenticatedContext(browser, authData);
     await page.waitForLoadState("networkidle"); //important for debugging
     console.log("Current page:", page.url());//important for debugging
-    
+
 
     // 4️⃣ Initialize product page
     const productsPage = new productPage(page);

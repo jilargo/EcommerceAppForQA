@@ -31,8 +31,8 @@ test.describe('Full User Flow Login', () => {
             await page.waitForLoadState("networkidle"); //important for debugging
             console.log("Current page:", page.url());//important for debugging
             await expect(page).toHaveURL(/login/);
-            const html = await page.content(); //loading the html file good for debugging
-            console.log("PAGE HTML:", html);//loading the html file good for debugging
+            //const html = await page.content(); //loading the html file good for debugging
+            //console.log("PAGE HTML:", html);//loading the html file good for debugging
             await login.login(
                 user.email,
                 user.password

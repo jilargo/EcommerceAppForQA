@@ -2,7 +2,7 @@
   "name": "Injecting User",
   "first_name": "Ian",
   "last_name": "Largo",
-  "email": "ian@example.com",
+  "email": "ian@yahoomail.com",
   "password": "!InfinityPassword123",
   "image": "profilePic.jpg",
   "expected": "Sign up"

@@ -27,8 +27,8 @@ test.describe.serial('Full User Flow Signup', () => {
             await page.waitForLoadState("networkidle"); //important for debugging
             console.log("Current page:", page.url());//important for debugging
             await expect(page).toHaveURL(/signup/);
-            const html = await page.content(); //Good for html loading debugging 
-            console.log("PAGE HTML:", html); //Good for html loading debugging
+            //const html = await page.content(); //Good for html loading debugging 
+            //console.log("PAGE HTML:", html); //Good for html loading debugging
             //precondition for duplicate email
             if (user.expected === 'existing_email_error') {
                 await createUserViaApi(request, user)
